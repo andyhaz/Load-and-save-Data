@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import "LoadSaveInterface.h"
 @implementation ViewController
 
 @synthesize textField;
@@ -25,54 +25,14 @@
 }
 
 - (IBAction)laodButton:(id)sender {
-    // Get the main window for the document.
-    // get the url of a .txt file
-    NSOpenPanel * zOpenPanel = [NSOpenPanel openPanel];
-    NSArray * zAryOfExtensions = [NSArray arrayWithObject:@"txt"];
-    [zOpenPanel setAllowedFileTypes:zAryOfExtensions];
-    
-    NSInteger zIntResult = [zOpenPanel runModal];
-    if (zIntResult == NSFileHandlingPanelCancelButton) {
-        NSLog(@"readUsingOpenPanel cancelled");
-        return;
-    }
-    NSURL *zUrl = [zOpenPanel URL];
-    
-    // read the file
-    NSString * zStr = [NSString stringWithContentsOfURL:zUrl
-                                               encoding:NSASCIIStringEncoding
-                                                  error:NULL];
-   // NSLog(@"zStr=\n%@",zStr);
-    
-    [textField setStringValue:zStr];
+    LoadSaveInterface *lsi = [[LoadSaveInterface alloc]init];
+    [textField setStringValue:[lsi loadFileData]];
 }
 
 - (IBAction)saveButton:(id)sender {
     // create the string to be written
-    NSString *zStr = [textField stringValue];
-    // get the file url
-    NSSavePanel * zSavePanel = [NSSavePanel savePanel];
-    NSArray * zAryOfExtensions = [NSArray arrayWithObject:@"txt"];
-    [zSavePanel setAllowedFileTypes:zAryOfExtensions];
-    
-    NSInteger zResult = [zSavePanel runModal];
-    
-    if (zResult == NSFileHandlingPanelCancelButton) {
-        NSLog(@"writeUsingSavePanel cancelled");
-        return;
-    }
-    NSURL *zUrl = [zSavePanel URL];
-    
-    NSString *writeData = [NSString stringWithFormat:@"%@",zStr];
-    
-    //write
-    BOOL zBoolResult = [writeData writeToURL:zUrl
-                             atomically:YES
-                               encoding:NSASCIIStringEncoding
-                                  error:NULL];
-    if (! zBoolResult) {
-        NSLog(@"writeUsingSavePanel failed");
-    }
-    NSLog(@"zStr=\n%@",writeData);
+    LoadSaveInterface *lsi = [[LoadSaveInterface alloc]init];
+    NSString *stringData = [textField stringValue];
+    [lsi saveFileSata:stringData];
 }
 @end
