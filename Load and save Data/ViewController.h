@@ -7,9 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+
 
 @interface ViewController : NSViewController
 
+- (IBAction)laodButton:(id)sender;
 
+- (IBAction)saveButton:(id)sender;
+
+@property (strong) IBOutlet NSTextField *textField;
 @end
-
